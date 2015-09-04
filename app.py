@@ -114,7 +114,7 @@ def post():
         if '10rare' in request.form:
             message = u"宝くじを 10 枚買いました！"
             vo.price += 3000
-            vo.count += 10
+            vo.count += 1
             result = turn_10rare()
         if 'reset' in request.form:
             message = u"リセットしました"
@@ -136,12 +136,16 @@ def run_local(args):
     if (num % 10) == 0:
         count_f = num / 10
         for i in range(0, int(count_f)):
-            print(i + 1, u"回め")
-            turn_10rare()
+            print(i + 1, u"回目")
+            result = turn_10rare()
+            for r in result:
+                print(r)
     else:
         for i in range(0, num):
-            print(i + 1, u"回め")
-            turn_rare()
+            print(i + 1, u"回目")
+            result = turn_rare()
+            for r in result:
+                print(r)
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:
