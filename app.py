@@ -79,21 +79,21 @@ def post():
     if request.method == 'POST':
         result = []
         if 'rare' in request.form:
-            title = "宝くじを 1 枚買いました！"
+            message = "宝くじを 1 枚買いました！"
             vo.price = vo.price + 300
             vo.count = vo.count + 1
             result = turn_rare()
         if '10rare' in request.form:
-            title = "宝くじを 10 枚買いました！"
+            message = "宝くじを 10 枚買いました！"
             vo.price = vo.price + 3000
             vo.count = vo.count + 1
             result = turn_10rare()
         if 'reset' in request.form:
-            title = "リセットしました"
+            message = "リセットしました"
             vo.price = 0
             vo.count = 0
             result = ""
-            message = "リセットしました"
+        title = message
         return render_template('index.html',
                                result=result, title=title,
                                time=t, vo=vo,

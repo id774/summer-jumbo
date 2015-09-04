@@ -9,7 +9,7 @@
         <p class="lead">
           {% if result %}
             {{ time }}<br>
-            宝くじを買いました！<br>
+            {{ message }}<br>
             {{ vo.count }} 回目 合計金額 {{ vo.price }} 円<br>
             結果は
             {% for v in result %}
