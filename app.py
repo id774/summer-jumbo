@@ -78,6 +78,8 @@ def pickup_rare():
                             str(_gain),
                             u"円です"])
 
+    print("".join(["rank:", str(_rank),
+                   " gain:", str(_gain)]))
     vo.gain += _gain
     return _message
 
