@@ -4,8 +4,15 @@ import sys
 from flask import Flask, render_template, request, redirect, url_for
 import random
 import datetime
+import logging
 
 app = Flask(__name__)
+
+app.logger.addHandler(logging.StreamHandler(sys.stdout))
+app.logger.setLevel(logging.ERROR)
+
+log = logging.getLogger(__name__)
+log.info('Start App')
 
 # Main
 class VO(object):
