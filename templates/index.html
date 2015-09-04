@@ -6,7 +6,18 @@
   <div class="container">
     <div class="row">
       <div class="col-md-12">
+        <form action="/post" method="post" name="rare" class="form-inline">
+          <button type="submit" name="rare" class="btn btn-default">宝くじを買う</button>
+        </form>
+        <form action="/post" method="post" name="10rare" class="form-inline">
+          <button type="submit" name="10rare" class="btn btn-default">宝くじを 10 枚買う</button>
+        </form>
+        <form action="/post" method="post" name="reset" class="form-inline">
+          <button type="submit" name="reset" class="btn btn-default">リセットする</button>
+        </form>
+
         <p class="lead">
+          <br>
           {% if result %}
             [{{ time }}]<br>
             [現在の収支]<br>
@@ -21,15 +32,6 @@
             {{ message }}
           {% endif %}
         </p>
-        <form action="/post" method="post" name="rare" class="form-inline">
-          <button type="submit" name="rare" class="btn btn-default">宝くじを買う</button>
-        </form>
-        <form action="/post" method="post" name="10rare" class="form-inline">
-          <button type="submit" name="10rare" class="btn btn-default">宝くじを 10 枚買う</button>
-        </form>
-        <form action="/post" method="post" name="reset" class="form-inline">
-          <button type="submit" name="reset" class="btn btn-default">リセットする</button>
-        </form>
       </div>
     </div>
   </div>
