@@ -47,7 +47,6 @@ def pickup_rare(weight):
     return picked_rarity
 
 def turn_rare():
-    """レアガチャを回す"""
     result = []
     # 小数点第三位を切り上げて 94.85%, 5.04%, 0.12%
     weight = [0.94849, 0.0504, 0.00111]
@@ -56,7 +55,6 @@ def turn_rare():
     return result
 
 def turn_10rare():
-    """10 連レアガチャを回す"""
     result = []
     # 小数点第三位を切り上げて 90.28%, 9.29%, 0.45%
     weight = [0.90278, 0.09281, 0.00441]
@@ -66,31 +64,11 @@ def turn_10rare():
     print(weight, result)
     return result
 
-def turn_toku10():
-    """特効 10 連レアガチャを回す"""
-    result = []
-    # 小数点第三位を切り上げて 88.65%, 11.13%, 0.24%
-    weight = [0.88648, 0.11121, 0.00231]
-    for v in range(0, 9):
-        result.append(pickup_rare(weight))
-    result.append("SR")
-    print(weight, result)
-    return result
-
-def turn_toku():
-    """特効レアガチャを回す"""
-    result = []
-    # 小数点第三位を切り上げて 89.31%, 10.46%, 0.24%
-    weight = [0.8931, 0.10459, 0.00231]
-    result.append(pickup_rare(weight))
-    print(weight, result[0])
-    return result
-
 # Routing
 @app.route('/')
 def index():
     title = "ようこそ"
-    message = "ガチャを回すにはボタンをクリックしてください"
+    message = "宝くじを買うにはボタンをクリックしてください"
     return render_template('index.html',
                            message=message, title=title)
 
@@ -101,25 +79,15 @@ def post():
     if request.method == 'POST':
         result = []
         if 'rare' in request.form:
-            title = "レアガチャを回しました！"
+            title = "宝くじを 1 枚買いました！"
             vo.price = vo.price + 300
             vo.count = vo.count + 1
             result = turn_rare()
         if '10rare' in request.form:
-            title = "10 連レアガチャを回しました！"
+            title = "宝くじを 10 枚買いました！"
             vo.price = vo.price + 3000
             vo.count = vo.count + 1
             result = turn_10rare()
-        if 'toku10' in request.form:
-            title = "特効 10 連レアガチャを回しました！"
-            vo.price = vo.price + 3000
-            vo.count = vo.count + 1
-            result = turn_toku10()
-        if 'toku' in request.form:
-            title = "特効レアガチャを回しました！"
-            vo.price = vo.price + 300
-            vo.count = vo.count + 1
-            result = turn_toku()
         if 'reset' in request.form:
             title = "リセットしました"
             vo.price = 0
@@ -140,17 +108,11 @@ def run_local(args):
         count_f = num / 10
         for i in range(0, int(count_f)):
             print(i + 1, "回め")
-            if len(args) == 3 and args[2] == "toku":
-                turn_toku10()
-            else:
-                turn_10rare()
+            turn_10rare()
     else:
         for i in range(0, num):
             print(i + 1, "回め")
-            if len(args) == 3 and args[2] == "toku":
-                turn_toku()
-            else:
-                turn_rare()
+            turn_rare()
 
 if __name__ == '__main__':
     if len(sys.argv) >= 2:

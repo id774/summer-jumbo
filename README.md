@@ -1,4 +1,4 @@
-# Flask Bootstrap
+# Summer Jumbo Simulator
 
 Start the app by running:
 
