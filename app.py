@@ -46,8 +46,6 @@ class VO(object):
 vo = VO()
 
 def pickup_rare():
-    """宝くじを 1 枚引いて当選金額を加算しメッセージを返却する"""
-
     random.seed()
 
     i = random.randint(0, 10000000)
@@ -72,13 +70,13 @@ def pickup_rare():
         _gain = 0
 
     if _rank == 0:
-        _message = "はずれです"
+        _message = u"はずれです"
     else:
         _message = "".join([str(_rank),
-                            " 等当たりです！ ",
-                            "当選金額は ",
+                            u" 等当たりです！ ",
+                            u"当選金額は ",
                             str(_gain),
-                            "円です"])
+                            u"円です"])
 
     vo.gain += _gain
     return _message
@@ -97,8 +95,8 @@ def turn_10rare():
 # Routing
 @app.route('/')
 def index():
-    title = "ようこそ"
-    message = "宝くじを買うにはボタンをクリックしてください"
+    title = u"ようこそ"
+    message = u"宝くじを買うにはボタンをクリックしてください"
     return render_template('index.html',
                            message=message, title=title)
 
@@ -109,17 +107,17 @@ def post():
     if request.method == 'POST':
         result = []
         if 'rare' in request.form:
-            message = "宝くじを 1 枚買いました！"
+            message = u"宝くじを 1 枚買いました！"
             vo.price += 300
             vo.count += 1
             result = turn_rare()
         if '10rare' in request.form:
-            message = "宝くじを 10 枚買いました！"
+            message = u"宝くじを 10 枚買いました！"
             vo.price += 3000
             vo.count += 10
             result = turn_10rare()
         if 'reset' in request.form:
-            message = "リセットしました"
+            message = u"リセットしました"
             vo.price = 0
             vo.count = 0
             vo.gain = 0
@@ -138,11 +136,11 @@ def run_local(args):
     if (num % 10) == 0:
         count_f = num / 10
         for i in range(0, int(count_f)):
-            print(i + 1, "回め")
+            print(i + 1, u"回め")
             turn_10rare()
     else:
         for i in range(0, num):
-            print(i + 1, "回め")
+            print(i + 1, u"回め")
             turn_rare()
 
 if __name__ == '__main__':
