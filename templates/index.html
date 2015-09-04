@@ -8,14 +8,15 @@
       <div class="col-md-12">
         <p class="lead">
           {% if result %}
-            {{ time }}<br>
+            [{{ time }}]<br>
+            [現在の収支]<br>
+            {{ vo.count }} 回目 支払金額 {{ vo.price }} 円 獲得金額 {{ vo.gain }} 円<br>
+            <br>
             {{ message }}<br>
-            {{ vo.count }} 回目 合計金額 {{ vo.price }} 円<br>
-            結果は
+            結果は<br>
             {% for v in result %}
-              {{ v }}
+              {{ v }}<br>
             {% endfor %}
-            でした！
           {% else %}
             {{ message }}
           {% endif %}

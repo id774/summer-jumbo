@@ -2,7 +2,7 @@
 
 import sys
 from flask import Flask, render_template, request, redirect, url_for
-import numpy as np
+import random
 import datetime
 
 app = Flask(__name__)
@@ -12,6 +12,7 @@ class VO(object):
     def __init__(self):
         self._count = 0
         self._price = 0
+        self._gain = 0
 
     def getcount(self):
         return self._count
@@ -25,43 +26,65 @@ class VO(object):
     def setprice(self, price):
         self._price = price
 
+    def getgain(self):
+        return self._gain
+
+    def setgain(self, gain):
+        self._gain = gain
+
     count = property(getcount, setcount)
     price = property(getprice, setprice)
+    gain = property(getgain, setgain)
 
 vo = VO()
 
-def pickup_premium():
-    """UR の景品を確定して排出する"""
-    ur = ["二穂", "雪枝", "華賀利", "真乃", "楓", "依咲里", "天音",
-          "陽奈", "いつみ", "紗々", "あから", "小織"]
-    return np.random.choice(ur)
+def pickup_rare():
+    """宝くじを 1 枚引いて当選金額を加算しメッセージを返却する"""
 
-def pickup_rare(weight):
-    """重みに応じてレアガチャを排出する"""
-    rarities = ["R", "SR", "UR"]
-    picked_rarity = np.random.choice(rarities, p=weight)
+    random.seed()
 
-    if picked_rarity == "UR":
-        picked_rarity = "".join((picked_rarity, "(", pickup_premium(), ")"))
+    i = random.randint(0, 10000000)
 
-    return picked_rarity
+    if i == 7777777:
+        _rank = 1
+        _gain = 500000000
+    elif i < 4:
+        _rank = 2
+        _gain = 10000000
+    elif i < 1000:
+        _rank = 3
+        _gain = 100000
+    elif i < 10000:
+        _rank = 4
+        _gain = 3000
+    elif i < 1000000:
+        _rank = 5
+        _gain = 300
+    else:
+        _rank = 0
+        _gain = 0
+
+    if _rank == 0:
+        _message = "はずれです"
+    else:
+        _message = "".join([str(_rank),
+                            " 等当たりです！ ",
+                            "当選金額は ",
+                            str(_gain),
+                            "円です"])
+
+    vo.gain += _gain
+    return _message
 
 def turn_rare():
     result = []
-    # 小数点第三位を切り上げて 94.85%, 5.04%, 0.12%
-    weight = [0.94849, 0.0504, 0.00111]
-    result.append(pickup_rare(weight))
-    print(weight, result[0])
+    result.append(pickup_rare())
     return result
 
 def turn_10rare():
     result = []
-    # 小数点第三位を切り上げて 90.28%, 9.29%, 0.45%
-    weight = [0.90278, 0.09281, 0.00441]
-    for v in range(0, 9):
-        result.append(pickup_rare(weight))
-    result.append("SR")
-    print(weight, result)
+    for v in range(0, 10):
+        result.append(pickup_rare())
     return result
 
 # Routing
@@ -80,13 +103,13 @@ def post():
         result = []
         if 'rare' in request.form:
             message = "宝くじを 1 枚買いました！"
-            vo.price = vo.price + 300
-            vo.count = vo.count + 1
+            vo.price += 300
+            vo.count += 1
             result = turn_rare()
         if '10rare' in request.form:
             message = "宝くじを 10 枚買いました！"
-            vo.price = vo.price + 3000
-            vo.count = vo.count + 1
+            vo.price += 3000
+            vo.count += 10
             result = turn_10rare()
         if 'reset' in request.form:
             message = "リセットしました"
