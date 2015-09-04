@@ -115,6 +115,7 @@ def post():
             message = "リセットしました"
             vo.price = 0
             vo.count = 0
+            vo.gain = 0
             result = ""
         title = message
         return render_template('index.html',
