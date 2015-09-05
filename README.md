@@ -6,5 +6,5 @@ Start the app by running:
 
 Or:
 
-    gunicorn app:app --logfile -
+    gunicorn app:app
 
